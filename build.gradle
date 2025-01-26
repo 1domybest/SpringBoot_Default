@@ -24,17 +24,62 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+
+	/**
+	 *  DB ---
+	 */
+
+	// mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// JPA
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// JPA log
+	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1") // DB 쿼리, value 확인 라이브러리 [실버전에서는 제거 필요 성능이슈]
+
+	// QueryDSL 전용 라이브러리
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+	/**
+	 *  보안 ---
+	 */
+	// 시큐리티
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	// JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+	/**
+	 *  웹 ---
+	 */
+	// web
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// devTools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+
+	/**
+	 *  도구 ---
+	 */
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+
+	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
