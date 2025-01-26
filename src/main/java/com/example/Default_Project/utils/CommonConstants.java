@@ -20,5 +20,5 @@ public class CommonConstants {
     public static final String WEB_CLIENT_PORT = "5173";
     public static final String WEB_CLIENT_URL = WEB_CLIENT_PATH+WEB_CLIENT_PORT;
 
-    public static final String WEB_OAUTH2_REDIRECT_URL = WEB_CLIENT_URL + "/oauth2/success";
+    public static final String WEB_OAUTH2_REDIRECT_URL = WEB_CLIENT_URL + "/oauth2/succeed";
 }

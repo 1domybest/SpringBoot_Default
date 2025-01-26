@@ -21,7 +21,7 @@ public class AuthController {
 
     @PostMapping("/token-refresh")
     public ResponseEntity<?> tokenRefresh(HttpServletRequest request, HttpServletResponse response) {
-
+        System.out.println("토큰 리프레쉬 요청");
         String header_accessToken = request.getHeader(JwtConstants.AUTHORIZATION_HEADER_KEY);
         String cookie_accessToken = jwtUtil.getAccessTokenByCookie(request);
 

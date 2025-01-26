@@ -115,7 +115,7 @@ public class JWTUtil {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(maxAgeInSeconds);
         //cookie.setSecure(true); // Https(인증서) 일시 이걸 true로
-        //cookie.setPath("/"); // 쿠키를 허용한 Path
+        cookie.setPath("/token-refresh"); // 쿠키를 허용한 Path
         cookie.setHttpOnly(true);
 
         return cookie;
@@ -143,12 +143,12 @@ public class JWTUtil {
 
     /**
      * access token 을 쿠키에 저장하기위한 공통 함수 [Oauth2를 위한 로직]
-     * @param refreshToken 재발급을 위한 리프레시 토큰
+     * @param accessToken 재발급을 위한 리프레시 토큰
      * @param response 쿠키를 담을 response
      * @param expiredMs 쿠키 유효기간
      */
-    public void addCookieAccessToken(String refreshToken, HttpServletResponse response, Long expiredMs) {
-        Cookie cookie = createCookie(JwtConstants.REFRESH, refreshToken, expiredMs);
+    public void addCookieAccessToken(String accessToken, HttpServletResponse response, Long expiredMs) {
+        Cookie cookie = createCookie(JwtConstants.ACCESS, accessToken, expiredMs);
         response.addCookie(cookie);
     }
 
@@ -204,6 +204,13 @@ public class JWTUtil {
     public String getAccessTokenByCookie(HttpServletRequest request) {
         String access = null;
         Cookie[] cookies = request.getCookies();
+
+        // 쿠키가 없으면 바로 null 반환
+        if (cookies == null) {
+            return null;
+        }
+
+
         for (Cookie cookie : cookies) {
 
             if (cookie.getName().equals(JwtConstants.ACCESS)) {

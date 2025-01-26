@@ -5,6 +5,7 @@ import com.example.Default_Project.service.snsServices.CustomOAuth2User;
 import com.example.Default_Project.utils.CommonConstants;
 import com.example.Default_Project.utils.JwtConstants;
 import jakarta.servlet.ServletException;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,6 +55,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 어차피 다시 재발급 받을예정임으로 만료기간은 1초로줌
         jwtUtil.addCookieAccessToken(access, response, JwtConstants.OAUTH2_ACCESS_EXPIRED_MS);
 
+
+        System.out.println("SNS 로그인 성공 " + access + jwtUtil.getAccessTokenByCookie(request));
         response.setStatus(HttpStatus.OK.value());
 
         response.sendRedirect(CommonConstants.WEB_OAUTH2_REDIRECT_URL);
