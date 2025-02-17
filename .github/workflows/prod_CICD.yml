@@ -61,7 +61,7 @@ jobs:
       - name: Check Current Color # 커맨드 이름
         run: |
           
-          status_code=$(curl -s -o /dev/null -w "%{http_code}" https://${{env.DOMAIN}}/api/env)
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" -L "https://${{ env.DOMAIN }}/api/env")
           
           if [[ "$status_code" -eq 200 ]]; then
             echo "✅ 서버가 정상 응답함 (200 OK)"
@@ -154,25 +154,7 @@ jobs:
           script_stop: true
           script: |
             docker exec -i main_nginx bash -c 'echo "set \$service_url ${{ env.TARGET_UPSTREAM }};" > /etc/nginx/conf.d/service-env.inc && nginx -s reload'
-
-  # 2번째 Job = 배포하기
-  deploy:
-    # build 가 끝난후에 실행되게 해라
-    needs: build
-    # 우분투의 마지막 최신버전을 사용하겠다
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Change nginx upstream
-        uses: appleboy/ssh-action@master  # 깃헙액션에 제공해주는 appleboy 에있는 ssh-action@master 라는 모듈을 사용하겠다.
-        with:
-          username: ${{ env.SERVER_USERNAME }}
-          host: ${{ env.SERVER_IP }}
-          key: ${{ env.SERVER_KEY }}
-          password: ${{ env.SERVER_PASSWORD }}
-          script_stop: true
-          script: |
-            docker exec -i nginxserver bash -c 'echo "set \$service_url ${{ env.TARGET_UPSTREAM }};" > /etc/nginx/conf.d/service-env.inc && nginx -s reload' 
+            
 
       # 현재 열려있는 서버 닫기 [이전 OLD 버전의 서버를 닫는것임]
       - name: Stop current server
@@ -185,4 +167,5 @@ jobs:
           script_stop: true
           script: |
             docker stop ${{env.CURRENT_UPSTREAM}}
-            docker rm ${{env.CURRENT_UPSTREAM}}
+            docker rm ${{env.CURRENT_UPSTREAM}} 
+
