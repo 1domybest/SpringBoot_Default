@@ -141,8 +141,8 @@ jobs:
                 ports:
                   - \"${{ env.TARGET_PORT }}:${{ env.TARGET_PORT }}\"
                 environment:
-                  - SPRING_PROFILES_ACTIVE=${{ env.CURRENT_BRANCH }}
-                  - SERVER_ENV=${{ env.TARGET_COLOR }}
+                  - SPRING_PROFILES_ACTIVE=${{ env.CURRENT_BRANCH }}\
+                  - SERVER_ENV=${{ env.TARGET_COLOR }}\
                 entrypoint: ["java", "-Dspring.profiles.active=${{ env.CURRENT_BRANCH }}", "-Dserver.env=${{ env.TARGET_COLOR }}", "-jar", "/app/app.jar"]
             " > docker-compose.yml
       
