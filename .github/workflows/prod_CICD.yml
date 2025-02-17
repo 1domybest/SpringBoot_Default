@@ -131,23 +131,7 @@ jobs:
           password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
-            # docker-compose.yml 파일을 서버에 작성
-            echo "
-            version: '3'
-            services:
-              app:
-                image: "${{ env.DOCKER_DOCKERHUB_USERNAME }}/${{ env.PLATFORM }}_${{ env.CURRENT_BRANCH }}_${{ env.TARGET_COLOR }}"
-                container_name: "${{ env.PLATFORM }}_${{ env.CURRENT_BRANCH }}_${{ env.TARGET_COLOR }}"
-                ports:
-                  - "${{ env.TARGET_PORT }}:${{ env.TARGET_PORT }}"
-                environment:
-                  - SPRING_PROFILES_ACTIVE=${{ env.CURRENT_BRANCH }}
-                  - SERVER_ENV=${{ env.TARGET_COLOR }}
-                entrypoint: "java -Dspring.profiles.active=${{ env.CURRENT_BRANCH }} -Dserver.env=${{ env.TARGET_COLOR }} -jar /app/app.jar"
-            " > docker-compose.yml
-      
-            # docker-compose를 사용하여 컨테이너 실행
-            docker-compose up -d
+            docker-compose -f /home/onseoktae/Documents/GitHub/ServerDefault/nginx/sites-available/${{ env.DOMAIN}}/composes/backend/docker_compose_${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}.yml up -d
 
       - name: Check deploy server URL with dynamic target
         uses: jtalk/url-health-check-action@v3
