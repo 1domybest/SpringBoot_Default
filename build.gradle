@@ -32,6 +32,7 @@ dependencies {
 
 	// mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
 	implementation 'org.javassist:javassist:3.15.0-GA'
 
 	// JPA
