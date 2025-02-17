@@ -113,11 +113,10 @@ jobs:
       # 도커 빌드 & 푸시 하기
       - name: Build Docker And Push
         run: |
-          IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
+          IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}:latest"
           
           docker build --platform linux/amd64 -t $IMAGE_NAME .
-          
-          docker push ${{ env.DOCKER_DOCKERHUB_USERNAME }}/$IMAGE_NAME:latest
+          docker push $IMAGE_NAME
 
       # Docker 컴포즈 하기
       - name: Docker compose
