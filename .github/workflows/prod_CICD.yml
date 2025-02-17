@@ -165,6 +165,9 @@ jobs:
           password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
-            docker stop ${{env.CURRENT_UPSTREAM}}
-            docker rm ${{env.CURRENT_UPSTREAM}} 
+            OLD_CONTAINER="${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.CURRENT_COLOR}}"
+            if docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
+            docker stop $OLD_CONTAINER
+            docker rm $OLD_CONTAINER
+            fi
 
