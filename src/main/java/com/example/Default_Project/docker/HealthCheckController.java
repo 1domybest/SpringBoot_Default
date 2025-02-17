@@ -28,7 +28,7 @@ public class HealthCheckController {
      * 이 함수를 통해 라우터를 변경해줌
      * @return
      */
-    @GetMapping("/hc")
+    @GetMapping("/api/hc")
     public ResponseEntity<?> healthCheck() {
         // blue -> green
         Map<String, String> responseData = new TreeMap<>();
@@ -39,7 +39,7 @@ public class HealthCheckController {
         return ResponseEntity.ok(responseData);
     }
 
-    @GetMapping("/env")
+    @GetMapping("/api/env")
     public ResponseEntity<?> getEnv() {
         return ResponseEntity.ok(env);
     }
