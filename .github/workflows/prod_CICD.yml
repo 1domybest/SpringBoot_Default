@@ -152,8 +152,8 @@ jobs:
           password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
-            docker exec -i main_nginx bash -c 'echo "set \$springboot_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.CURRENT_COLOR}};" > /etc/nginx/conf.d/$springboot_service_url_env.inc && nginx -s reload'
-            
+            echo "set \$springboot_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}};" | docker exec -i main_nginx tee /etc/nginx/sites-available/seoktae.online/config/backend/springboot_service_env.inc
+            docker exec -i main_nginx nginx -s reload
 
       # 현재 열려있는 서버 닫기 [이전 OLD 버전의 서버를 닫는것임]
       - name: Stop current server
