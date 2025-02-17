@@ -129,6 +129,7 @@ jobs:
           password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
+            
              docker run -d \
             --name "${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}" \
             -p "${{env.TARGET_PORT}}:${{env.TARGET_PORT}}" \
