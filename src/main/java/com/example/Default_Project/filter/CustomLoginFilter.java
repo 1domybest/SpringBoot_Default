@@ -54,6 +54,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         ObjectMapper objectMapper = new ObjectMapper();
         Map jsonMap = null;
         try {
+
             jsonMap = objectMapper.readValue(request.getInputStream(), Map.class);
         } catch (IOException e) {
             // 데이터가 없음으로 예외처리

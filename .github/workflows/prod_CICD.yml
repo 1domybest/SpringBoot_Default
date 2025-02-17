@@ -1,1 +1,190 @@
 
+# 깃헙 Action Trigger CICD
+name: CI
+
+env:
+  SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+  SERVER_IP: ${{ secrets.SERVER_IP }}
+  SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+  SERVER_KEY: ${{ secrets.SERVER_KEY }}
+
+  DOCKER_DOCKERHUB_USERNAME: ${{ secrets.DOCKER_DOCKERHUB_USERNAME }}
+  DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+
+  APPLICATION_SECRET: ${{ secrets.APPLICATION_SECRET }}
+
+  PLATFORM: "springboot"
+  BLUE: "blue"
+  GREEN: "green"
+  BLUE_PORT: 8080
+  GREEN_PORT: 8081
+  REACT_HC_PORT: 80
+  DOMAIN: "seoktae.online"
+
+on:
+  push:
+    branches: [ "prod" ]
+  pull_request:
+    branches: [ "prod" ]
+
+permissions:
+  contents: read
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # 우분투 최신버전을 사용하겠다
+    steps:
+      - uses: actions/checkout@v3 # 지금 트리거된 브랜치를 현재 브랜치로 checkout 하겠다
+
+      # 트리거된 브랜치 명 저장
+      - name: Set CURRENT_BRANCH
+        run: |
+          echo "CURRENT_BRANCH=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "Triggered by branch: ${GITHUB_REF_NAME}"
+
+      # OpenJDK 17 설치 (Temurin 사용)
+      - name: Install OpenJDK 17 #  # 커맨드 이름
+        uses: actions/setup-java@v3 # 깃헙 action 에 있는 setup-java@v3 라는 모듈을 사용하겠다.
+        with:
+          java-version: '17' # java 17 을 사용하겠다.
+          distribution: 'temurin' # JDK 17을 설치할 때 Eclipse Temurin 배포판을 다운 받겠다.
+
+      # 설치한 JDK 설정
+      - name: Set Java 17 # 커맨드 이름
+        uses: actions/setup-java@v3  # 깃헙 action 에 있는 setup-java@v3 라는 모듈을 사용하겠다.
+        with:
+          java-version: '17' # java 버전
+          distribution: 'temurin' # Java17 를 Eclipse Temurin 배포판으로 설정 하겠다.
+
+
+      - name: Check Current Color # 커맨드 이름
+        run: |
+          
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" https://${{env.DOMAIN}}/api/env)
+          
+          if [[ "$status_code" -eq 200 ]]; then
+            echo "✅ 서버가 정상 응답함 (200 OK)"
+            
+            CURRENT_COLOR=$(curl -s "http://${{ env.SERVER_IP }}/env")
+            echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
+            echo "현재 컬러 = $CURRENT_COLOR"
+          
+            if [ "$CURRENT_COLOR" = "$BLUE" ]; then
+              echo "CURRENT_PORT=$BLUE_PORT" >> $GITHUB_ENV
+              echo "TARGET_PORT=$GREEN_PORT" >> $GITHUB_ENV
+              echo "TARGET_COLOR=$GREEN" >> $GITHUB_ENV
+              elif [ "$CURRENT_COLOR" = "$GREEN" ]; then
+              echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
+              echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
+              echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
+            else
+              echo "CURRENT_PORT=3" >> $GITHUB_ENV
+              echo "TARGET_PORT=unknown" >> $GITHUB_ENV
+            fi
+          else
+            echo "⚠️ 예상치 못한 상태 코드: $status_code"
+            
+            echo "Curl request failed or returned empty, setting CURRENT_COLOR to GREEN"
+            echo "CURRENT_COLOR=$GREEN" >> $GITHUB_ENV
+            echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
+            echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
+            echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
+            echo "열려있는 서버가 없기에 디폴트 컬러 BLUE로 실행"
+          fi
+
+
+      # 그래들을 사용하여 현재 git 에 있는걸 빌드하는 커맨드
+      - name: Build with Gradle # 커맨드 이름
+        run: |
+          echo ${{env.APPLICATION_SECRET}} | base64 --decode > ./src/main/resources/application-secret.yml
+          cat ./src/main/resources/application-secret.yml
+          chmod +x ./gradlew
+          ./gradlew clean build -x test
+
+      # Docker Hub 에 로그인하기
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 # 깃헙 액션에서 제공해주는 도커로그인 기능을 사용하겠다.
+        with:
+          # 도커 허브에서 사용하는 아이디와 발급받은 비밀 토큰
+          username: ${{ env.DOCKER_DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKER_TOKEN }}
+
+      # 도커 빌드 & 푸시 하기
+      - name: Build Docker And Push
+        run: |
+          IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
+          
+          docker build --platform linux/amd64 -t $IMAGE_NAME .
+          
+          docker push ${{ env.DOCKER_DOCKERHUB_USERNAME }}/$IMAGE_NAME:latest
+
+      # Docker 컴포즈 하기
+      - name: Docker compose
+        uses: appleboy/ssh-action@master # 깃헙액션에 제공해주는 appleboy 에있는 ssh-action@master 라는 모듈을 사용하겠다.
+        with:
+          username: ${{ env.SERVER_USERNAME }}
+          host: ${{ env.SERVER_IP }}
+          key: ${{ env.SERVER_KEY }}
+          password: ${{ env.SERVER_PASSWORD }}
+          script_stop: true
+          script: |
+             docker run -d \
+            --name "${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}" \
+            -p "${{env.TARGET_PORT}}:${{env.TARGET_PORT}}" \
+            "${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
+        
+
+      - name: Check deploy server URL with dynamic target
+        uses: jtalk/url-health-check-action@v3
+        with:
+          # 현재 EC2 아이피 + hc[건강체크] + 방금 연 서버이름 [green or blue] + env 를 체크
+          # 포트는 nginx 에서 라우팅할거임
+          url: http://${{ env.DOMAIN }}/api/${{env.PLATFORM}}/${{env.CURRENT_BRANCH}}/${{env.TARGET_COLOR}}
+          # 최대 3번
+          max-attempts: 3
+          # 10초 간격으로
+          retry-delay: 10s
+
+      - name: Change nginx upstream
+        uses: appleboy/ssh-action@master  # 깃헙액션에 제공해주는 appleboy 에있는 ssh-action@master 라는 모듈을 사용하겠다.
+        with:
+          username: ${{ env.SERVER_USERNAME }}
+          host: ${{ env.SERVER_IP }}
+          key: ${{ env.SERVER_KEY }}
+          password: ${{ env.SERVER_PASSWORD }}
+          script_stop: true
+          script: |
+            docker exec -i main_nginx bash -c 'echo "set \$service_url ${{ env.TARGET_UPSTREAM }};" > /etc/nginx/conf.d/service-env.inc && nginx -s reload'
+
+  # 2번째 Job = 배포하기
+  deploy:
+    # build 가 끝난후에 실행되게 해라
+    needs: build
+    # 우분투의 마지막 최신버전을 사용하겠다
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Change nginx upstream
+        uses: appleboy/ssh-action@master  # 깃헙액션에 제공해주는 appleboy 에있는 ssh-action@master 라는 모듈을 사용하겠다.
+        with:
+          username: ${{ env.SERVER_USERNAME }}
+          host: ${{ env.SERVER_IP }}
+          key: ${{ env.SERVER_KEY }}
+          password: ${{ env.SERVER_PASSWORD }}
+          script_stop: true
+          script: |
+            docker exec -i nginxserver bash -c 'echo "set \$service_url ${{ env.TARGET_UPSTREAM }};" > /etc/nginx/conf.d/service-env.inc && nginx -s reload' 
+
+      # 현재 열려있는 서버 닫기 [이전 OLD 버전의 서버를 닫는것임]
+      - name: Stop current server
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ env.SERVER_USERNAME }}
+          host: ${{ env.SERVER_IP }}
+          key: ${{ env.SERVER_KEY }}
+          password: ${{ env.SERVER_PASSWORD }}
+          script_stop: true
+          script: |
+            docker stop ${{env.CURRENT_UPSTREAM}}
+            docker rm ${{env.CURRENT_UPSTREAM}}

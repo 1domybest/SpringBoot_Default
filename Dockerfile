@@ -14,3 +14,4 @@ COPY ${JAR_FILE} app.jar
 
 # ENTRYPOINT 명령어로 Java 애플리케이션 실행
 ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILES}", "-Dserver.env=${ENV}", "-jar", "/app/app.jar"]
+
