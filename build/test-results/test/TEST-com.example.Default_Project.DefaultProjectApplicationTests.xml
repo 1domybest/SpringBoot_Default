@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.Default_Project.DefaultProjectApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-02-17T06:44:09" hostname="onseogtaes-MacBook-Pro.local" time="0.292">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.example.Default_Project.DefaultProjectApplicationTests" time="0.292"/>
+  <system-out><![CDATA[15:44:07.184 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.Default_Project.DefaultProjectApplicationTests]: DefaultProjectApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+15:44:07.236 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.Default_Project.DefaultProjectApplication for test class com.example.Default_Project.DefaultProjectApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.2)
+
+2025-02-17T15:44:07.465+09:00  INFO 70425 --- [    Test worker] c.e.D.DefaultProjectApplicationTests     : Starting DefaultProjectApplicationTests using Java 17.0.12 with PID 70425 (started by onseoktae in /Users/onseoktae/Documents/GitHub/Default/SpringBoot_Default)
+2025-02-17T15:44:07.466+09:00  INFO 70425 --- [    Test worker] c.e.D.DefaultProjectApplicationTests     : The following 3 profiles are active: "local", "common", "local_secret"
+2025-02-17T15:44:07.774+09:00  INFO 70425 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-17T15:44:07.805+09:00  INFO 70425 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 27 ms. Found 2 JPA repository interfaces.
+2025-02-17T15:44:08.080+09:00  INFO 70425 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-17T15:44:08.105+09:00  INFO 70425 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.5.Final
+2025-02-17T15:44:08.120+09:00  INFO 70425 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-02-17T15:44:08.243+09:00  INFO 70425 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-02-17T15:44:08.257+09:00  INFO 70425 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-02-17T15:44:08.345+09:00  INFO 70425 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2b058bfd
+2025-02-17T15:44:08.346+09:00  INFO 70425 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-02-17T15:44:08.391+09:00  INFO 70425 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'p6SpyDataSourceDecorator [com.p6spy.engine.spy.P6DataSource] -> dataSource [com.zaxxer.hikari.HikariDataSource]']
+	Database driver: undefined/unknown
+	Database version: 9.2
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-02-17T15:44:08.758+09:00  INFO 70425 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-02-17T15:44:08.777+09:00  INFO 70425 --- [    Test worker] p6spy                                    : #1739774648776 | took 11ms | statement | connection 1| url jdbc:mysql://localhost:3306/jwt?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    drop table if exists AuthEntity
+
+    drop table if exists AuthEntity;
+2025-02-17T15:44:08.784+09:00  INFO 70425 --- [    Test worker] p6spy                                    : #1739774648784 | took 7ms | statement | connection 1| url jdbc:mysql://localhost:3306/jwt?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    drop table if exists UserEntity
+
+    drop table if exists UserEntity;
+2025-02-17T15:44:08.793+09:00  INFO 70425 --- [    Test worker] p6spy                                    : #1739774648793 | took 6ms | statement | connection 2| url jdbc:mysql://localhost:3306/jwt?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    create table AuthEntity (
+        id bigint not null auto_increment,
+        expiration varchar(255),
+        refreshToken varchar(255),
+        username varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+
+    create table AuthEntity (
+        id bigint not null auto_increment,
+        expiration varchar(255),
+        refreshToken varchar(255),
+        username varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+2025-02-17T15:44:08.801+09:00  INFO 70425 --- [    Test worker] p6spy                                    : #1739774648801 | took 7ms | statement | connection 2| url jdbc:mysql://localhost:3306/jwt?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    create table UserEntity (
+        id bigint not null auto_increment,
+        email varchar(255),
+        name varchar(255),
+        password varchar(255),
+        role varchar(255),
+        username varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+
+    create table UserEntity (
+        id bigint not null auto_increment,
+        email varchar(255),
+        name varchar(255),
+        password varchar(255),
+        role varchar(255),
+        username varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+2025-02-17T15:44:08.803+09:00  INFO 70425 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+JWT log: JWTUtil
+JWT log: CorsMvcConfig addCorsMappings
+JWT log: SecurityConfig filterChain
+JWT log: SecurityConfig authenticationManager
+JWT log: LoginFilter
+JWT log: SecurityConfig bCryptPasswordEncoder
+2025-02-17T15:44:09.333+09:00  INFO 70425 --- [    Test worker] c.e.D.DefaultProjectApplicationTests     : Started DefaultProjectApplicationTests in 2.03 seconds (process running for 2.559)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
