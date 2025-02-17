@@ -3,8 +3,8 @@ FROM gradle:7.6.2-jdk17-alpine
 
 # ARG: 빌드 과정에서 사용할 변수 선언
 ARG JAR_FILE=build/libs/*.jar
-ARG PROFILES
-ARG ENV
+ARG PROFILES="prod"
+ARG ENV="blue"
 
 # 워크 디렉토리 설정
 WORKDIR /app
