@@ -32,7 +32,7 @@ dependencies {
 
 	// mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	implementation 'mysql:mysql-connector-java:8.0.30'
+	implementation 'org.javassist:javassist:3.15.0-GA'
 
 	// JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
