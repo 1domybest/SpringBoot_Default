@@ -136,13 +136,13 @@ jobs:
             version: '3'
             services:
               app:
-                image: \"${{ env.DOCKER_DOCKERHUB_USERNAME }}/${{ env.PLATFORM }}_${{ env.CURRENT_BRANCH }}_${{ env.TARGET_COLOR }}\"
-                container_name: \"${{ env.PLATFORM }}_${{ env.CURRENT_BRANCH }}_${{ env.TARGET_COLOR }}\"
+                image: "${{ env.DOCKER_DOCKERHUB_USERNAME }}/${{ env.PLATFORM }}_${{ env.CURRENT_BRANCH }}_${{ env.TARGET_COLOR }}"
+                container_name: "${{ env.PLATFORM }}_${{ env.CURRENT_BRANCH }}_${{ env.TARGET_COLOR }}"
                 ports:
-                  - \"${{ env.TARGET_PORT }}:${{ env.TARGET_PORT }}\"
+                  - "${{ env.TARGET_PORT }}:${{ env.TARGET_PORT }}"
                 environment:
-                  - SPRING_PROFILES_ACTIVE=${{ env.CURRENT_BRANCH }}\
-                  - SERVER_ENV=${{ env.TARGET_COLOR }}\
+                  - SPRING_PROFILES_ACTIVE=${{ env.CURRENT_BRANCH }}
+                  - SERVER_ENV=${{ env.TARGET_COLOR }}
                 entrypoint: "java -Dspring.profiles.active=${{ env.CURRENT_BRANCH }} -Dserver.env=${{ env.TARGET_COLOR }} -jar /app/app.jar"
             " > docker-compose.yml
       
