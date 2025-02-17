@@ -9,10 +9,15 @@ ARG ENV
 # 워크 디렉토리 설정
 WORKDIR /app
 
+# JAR 파일 경로 확인
+RUN echo "JAR_FILE path: ${JAR_FILE}"
+
 # JAR 파일 복사
-#COPY ${JAR_FILE} app.jar
-COPY . /app/
+COPY ${JAR_FILE} app.jar
+
+# 복사된 파일 확인
+RUN ls -al /app
 
 # ENTRYPOINT 명령어로 Java 애플리케이션 실행
-ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILES}", "-Dserver.env=${ENV}", "-jar", "/app/build/libs/app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILES}", "-Dserver.env=${ENV}", "-jar", "/app/app.jar"]
 
