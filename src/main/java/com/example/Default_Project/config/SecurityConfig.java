@@ -93,34 +93,34 @@ public class SecurityConfig {
 
         System.out.println("JWT log: " + "SecurityConfig filterChain");
 
-        http.cors((cors) -> cors
-                .configurationSource(new CorsConfigurationSource() {
-                    @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                        CorsConfiguration configuration = new CorsConfiguration();
-
-                        // 허용할 Origin 설정
-                        configuration.setAllowedOrigins(Collections.singletonList(CommonConstants.WEB_CLIENT_URL)); // React 클라이언트 URL
-
-                        // 허용할 HTTP 메서드
-                        configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 HTTP 메서드 허용
-
-                        // 인증 정보 포함 허용
-                        configuration.setAllowCredentials(true);
-
-                        // 허용할 요청 헤더
-                        configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 요청 헤더 허용
-
-                        // 프론트 쪽에 노출할 응답 헤더
-                        configuration.setExposedHeaders(Collections.singletonList(JwtConstants.AUTHORIZATION_HEADER_KEY)); // Authorization 헤더 노출
-
-                        // CORS 검사 결과 캐싱 시간 설정
-                        configuration.setMaxAge(3600L); // 1시간(3600초)
-
-                        return configuration; // 올바른 CORS 설정 반환
-                    }
-                })
-        );
+//        http.cors((cors) -> cors
+//                .configurationSource(new CorsConfigurationSource() {
+//                    @Override
+//                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+//                        CorsConfiguration configuration = new CorsConfiguration();
+//
+//                        // 허용할 Origin 설정
+//                        configuration.setAllowedOrigins(Collections.singletonList(CommonConstants.WEB_CLIENT_URL)); // React 클라이언트 URL
+//
+//                        // 허용할 HTTP 메서드
+//                        configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 HTTP 메서드 허용
+//
+//                        // 인증 정보 포함 허용
+//                        configuration.setAllowCredentials(true);
+//
+//                        // 허용할 요청 헤더
+//                        configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 요청 헤더 허용
+//
+//                        // 프론트 쪽에 노출할 응답 헤더
+//                        configuration.setExposedHeaders(Collections.singletonList(JwtConstants.AUTHORIZATION_HEADER_KEY)); // Authorization 헤더 노출
+//
+//                        // CORS 검사 결과 캐싱 시간 설정
+//                        configuration.setMaxAge(3600L); // 1시간(3600초)
+//
+//                        return configuration; // 올바른 CORS 설정 반환
+//                    }
+//                })
+//        );
 
 
         //csrf disable
