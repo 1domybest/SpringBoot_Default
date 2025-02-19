@@ -103,8 +103,7 @@ jobs:
           echo ${{env.APPLICATION_SECRET}} | base64 --decode > ./src/main/resources/application-secret.yml
           cat ./src/main/resources/application-secret.yml
           chmod +x ./gradlew
-          ./gradlew clean build -x test
-          - name: Build with Gradle # 커맨드 이름
+          ./gradlew clean build --no-daemon --refresh-dependencies -x test
 
 
       # Docker Hub 에 로그인하기
