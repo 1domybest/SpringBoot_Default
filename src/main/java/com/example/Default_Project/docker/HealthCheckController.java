@@ -43,7 +43,7 @@ public class HealthCheckController {
     public ResponseEntity<?> getEnv() {
         // blue -> green
         Map<String, String> responseData = new TreeMap<>();
-        responseData.put("color", env + "테스트 입니다.");
+        responseData.put("color", env);
         return ResponseEntity.ok(responseData);
     }
 }
