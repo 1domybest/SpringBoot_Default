@@ -175,5 +175,5 @@ jobs:
             docker stop $OLD_CONTAINER
             docker rm $OLD_CONTAINER
             fi
-            docker rmi -f otisaws/springboot_prod_green:latest
+            docker rmi -f otisaws/springboot_prod_blue:latest
 
