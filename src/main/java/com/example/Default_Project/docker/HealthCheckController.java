@@ -45,6 +45,7 @@ public class HealthCheckController {
         // blue -> green
         Map<String, String> responseData = new TreeMap<>();
         responseData.put("color", env);
+        responseData.put("springboot", env);
         return ResponseEntity.ok(responseData);
     }
 }
