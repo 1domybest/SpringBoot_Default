@@ -49,7 +49,7 @@ public class SecurityConfig {
     /**
      * JWT 관련 유틸함수 모음
      */
-    private final JWTUtil jwtUtil;
+//    private final JWTUtil jwtUtil;
 
     /**
      * 토큰저장 전용 Entity
