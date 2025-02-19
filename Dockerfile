@@ -1,23 +1,30 @@
-# OpenJDK 23 기반의 Gradle 이미지 사용
-FROM gradle:7.6.2-jdk17-alpine
+# OpenJDK 17이 포함된 Gradle 이미지 사용
+FROM gradle:7.6.2-jdk17-alpine AS builder
 
-# ARG: 빌드 과정에서 사용할 변수 선언
-ARG JAR_FILE=build/libs/*.jar
+# 작업 디렉토리 설정
+WORKDIR /app
+
+# 프로젝트 소스 코드 복사
+COPY --chown=gradle:gradle . .
+
+# Gradle 빌드 실행 (JAR 생성)
+RUN gradle build --no-daemon
+
+# ---- 실행 이미지 ----
+FROM openjdk:17-alpine
+
+# 환경 변수
 ARG PROFILES
 ARG ENV
 
-# 워크 디렉토리 설정
+# 작업 디렉토리 설정
 WORKDIR /app
 
-# JAR 파일 경로 확인
-RUN echo "JAR_FILE path: ${JAR_FILE}"
-
-# JAR 파일 복사
-COPY ${JAR_FILE} app.jar
+# 빌드된 JAR 파일을 실행 이미지로 복사
+COPY --from=builder /app/build/libs/*.jar app.jar
 
 # 복사된 파일 확인
 RUN ls -al /app
 
-# ENTRYPOINT 명령어로 Java 애플리케이션 실행
+# 컨테이너 실행 시 Spring Boot 실행
 ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILES}", "-Dserver.env=${ENV}", "-jar", "/app/app.jar"]
-
