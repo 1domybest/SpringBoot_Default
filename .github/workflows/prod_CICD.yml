@@ -66,11 +66,8 @@ jobs:
           if [[ "$status_code" -eq 200 ]]; then
             echo "✅ 서버가 정상 응답함 (200 OK)"
             
-            response=$(curl -s https://${{env.DOMAIN}}/api/env)
-            echo "Raw response: $response"
-          
-            CURRENT_COLOR=$(echo "$response" | jq -r '.color')  # JSON에서 color 값 추출
-
+            CURRENT_COLOR=$(curl -s "http://${{ env.SERVER_IP }}/api/env")
+            echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
             echo "현재 컬러 = $CURRENT_COLOR"
           
             if [ "$CURRENT_COLOR" = "$BLUE" ]; then
