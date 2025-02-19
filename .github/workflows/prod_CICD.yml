@@ -174,6 +174,6 @@ jobs:
             if docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
             docker stop $OLD_CONTAINER
             docker rm $OLD_CONTAINER
-            docker rmi otisaws/springboot_prod_green
+            docker rmi -f springboot_prod_green
             fi
 
