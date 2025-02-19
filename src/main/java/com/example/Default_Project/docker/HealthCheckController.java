@@ -41,6 +41,6 @@ public class HealthCheckController {
 
     @GetMapping("/api/env")
     public ResponseEntity<?> getEnv() {
-        return ResponseEntity.ok(env + "Ggg");
+        return ResponseEntity.ok(env);
     }
 }
