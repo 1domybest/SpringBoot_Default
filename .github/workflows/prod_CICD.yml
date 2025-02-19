@@ -174,5 +174,6 @@ jobs:
             if docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
             docker stop $OLD_CONTAINER
             docker rm $OLD_CONTAINER
+            docker rmi ${{ env.DOCKER_DOCKERHUB_USERNAME }}/$OLD_CONTAINER:latest  # 이전 이미지 삭제
             fi
 
