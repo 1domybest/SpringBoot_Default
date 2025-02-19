@@ -135,7 +135,7 @@ jobs:
           password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
-            docker-compose -f /home/onseoktae/Documents/GitHub/ServerDefault/nginx/sites-available/${{ env.DOMAIN}}/composes/backend/docker_compose_${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}.yml up -d
+            docker-compose -f /home/onseoktae/Documents/GitHub/ServerDefault/nginx/sites-available/${{ env.DOMAIN}}/composes/backend/docker_compose_${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}.yml up -d --force-recreate
 
       - name: Check deploy server URL with dynamic target
         uses: jtalk/url-health-check-action@v3
