@@ -70,9 +70,10 @@ jobs:
             echo "Raw response: $response"
           
             CURRENT_COLOR=$(echo "$response" | jq -r '.color')  # JSON에서 color 값 추출
-
-            echo "현재 컬러 = $CURRENT_COLOR"
+            echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
           
+            echo "현재 컬러 = $CURRENT_COLOR"
+            
             if [ "$CURRENT_COLOR" = "$BLUE" ]; then
               echo "CURRENT_PORT=$BLUE_PORT" >> $GITHUB_ENV
               echo "TARGET_PORT=$GREEN_PORT" >> $GITHUB_ENV
