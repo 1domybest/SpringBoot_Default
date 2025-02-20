@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * cors 에러를 방지하기위한 클래스
  */
-//@Configuration
-//public class CorsMvcConfig implements WebMvcConfigurer {
+@Configuration
+public class CorsMvcConfig implements WebMvcConfigurer {
 //
 //    @Override
 //    public void addCorsMappings(CorsRegistry corsRegistry) {
@@ -17,4 +17,4 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //        corsRegistry.addMapping("/**")
 //                .allowedOrigins(CommonConstants.WEB_CLIENT_URL);
 //    }
-//}
+}
