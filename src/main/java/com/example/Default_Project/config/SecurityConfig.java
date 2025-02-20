@@ -25,6 +25,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -100,7 +101,8 @@ public class SecurityConfig {
                         CorsConfiguration configuration = new CorsConfiguration();
 
                         // 허용할 Origin 설정
-                        configuration.setAllowedOrigins(Collections.singletonList(CommonConstants.WEB_CLIENT_URL)); // React 클라이언트 URL
+                        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
+//                        configuration.setAllowedOrigins(Collections.singletonList(CommonConstants.WEB_CLIENT_URL)); // React 클라이언트 URL
 
                         // 허용할 HTTP 메서드
                         configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 HTTP 메서드 허용
