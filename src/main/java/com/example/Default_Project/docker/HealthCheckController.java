@@ -40,7 +40,7 @@ public class HealthCheckController {
         return ResponseEntity.ok(responseData);
     }
 
-    @GetMapping("/api/env")
+    @GetMapping("/env")
     public ResponseEntity<?> getEnv() {
         // blue -> green
         Map<String, String> responseData = new TreeMap<>();
