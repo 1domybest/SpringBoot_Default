@@ -156,9 +156,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/api/hc", "/api/env").permitAll() // 무중단 배포용
-                .requestMatchers("/login", "/join").permitAll() // 허용
-                .requestMatchers("/admin").hasRole("ADMIN")
-                .requestMatchers("/token-refresh").permitAll()
+                .requestMatchers("/api/login", "/api/join").permitAll() // 허용
+                .requestMatchers("/api/admin").hasRole("ADMIN")
+                .requestMatchers("/api/token-refresh").permitAll()
                 // 권한필요 단 토큰이 없는데 여기까지 올일이 없음
                 // 단 혹시나 토큰이 없거나 role이 다르다면 바로 다음 필터로 넘어감
                 .anyRequest().authenticated() // 나머지는 다 가능 else

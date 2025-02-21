@@ -55,7 +55,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 어차피 다시 재발급 받을예정임으로 만료기간은 1초로줌
         jwtUtil.addCookieAccessToken(access, response, JwtConstants.OAUTH2_ACCESS_EXPIRED_MS);
 
-
         System.out.println("SNS 로그인 성공 " + access + jwtUtil.getAccessTokenByCookie(request));
         response.setStatus(HttpStatus.OK.value());
 

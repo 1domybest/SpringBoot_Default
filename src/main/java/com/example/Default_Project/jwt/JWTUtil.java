@@ -115,7 +115,7 @@ public class JWTUtil {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(maxAgeInSeconds);
         //cookie.setSecure(true); // Https(인증서) 일시 이걸 true로
-        cookie.setPath("/token-refresh"); // 쿠키를 허용한 Path
+        cookie.setPath("/api/token-refresh"); // 쿠키를 허용한 Path
         cookie.setHttpOnly(true);
 
         return cookie;
@@ -181,7 +181,7 @@ public class JWTUtil {
      */
     public void deleteCookie(HttpServletResponse response, String key) {
         Cookie cookie = new Cookie(key, null); // 값은 null로 설정
-        cookie.setPath("/"); // 원래 쿠키의 Path와 동일하게 설정해야 함
+        cookie.setPath(cookie.getPath()); // 원래 쿠키의 Path와 동일하게 설정해야 함
         cookie.setMaxAge(0); // 0으로 설정하여 즉시 만료
         cookie.setHttpOnly(true); // 기존 쿠키의 설정과 일치시켜야 함
         response.addCookie(cookie); // 응답에 삭제용 쿠키 추가
@@ -207,12 +207,14 @@ public class JWTUtil {
 
         // 쿠키가 없으면 바로 null 반환
         if (cookies == null) {
+            System.out.println("쿠키없음");
             return null;
         }
-
+        System.out.println("쿠키있음");
 
         for (Cookie cookie : cookies) {
-
+            System.out.println(cookie.getName());
+            System.out.println(cookie.getValue());
             if (cookie.getName().equals(JwtConstants.ACCESS)) {
 
                 access = cookie.getValue();

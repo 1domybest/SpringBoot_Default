@@ -39,7 +39,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         this.jwtUtil = jwtUtil;
 
         // 기본 경로를 "/login"으로 변경
-        setFilterProcessesUrl("/login");
+        setFilterProcessesUrl("/api/login");
     }
 
     /**
