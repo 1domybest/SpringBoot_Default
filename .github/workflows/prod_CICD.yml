@@ -66,7 +66,7 @@ jobs:
           if [[ "$status_code" -eq 200 ]]; then
           
             echo "✅ 서버가 정상 응답함 (200 OK)"
-            response=$(curl -s https://${{env.DOMAIN}}/env)
+            response=$(curl -s -L http://${{env.DOMAIN}}/env)
             echo "Raw response: $response"
           
             CURRENT_COLOR=$(echo "$response" | jq -r '.color')  # JSON에서 color 값 추출
