@@ -50,6 +50,11 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         System.out.println("JWT log: " + "LoginFilter attemptAuthentication");
 
+        if (!request.getRequestURI().equals("/login")) {
+            // "/login"이 아닌 경우 필터를 건너뛰고 다음 필터로 전달
+            return null;
+        }
+
         // JSON 데이터 파싱 받는 데이터형식이 form 이아닌 json 이라면
         ObjectMapper objectMapper = new ObjectMapper();
         Map jsonMap = null;
