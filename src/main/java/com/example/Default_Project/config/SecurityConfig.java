@@ -126,10 +126,11 @@ public class SecurityConfig {
 
 
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/api/hc", "/api/env").permitAll() // 무중단 배포용
-                .requestMatchers("/api/login", "/api/join").permitAll() // 허용
-                .requestMatchers("/api/admin").hasRole("ADMIN")
-                .requestMatchers("/api/token-refresh").permitAll()
+                .requestMatchers("/hc", "/env").permitAll() // 무중단 배포용
+                .requestMatchers("oauth2").permitAll() // 무중단 배포용
+                .requestMatchers("/login", "/join").permitAll() // 허용
+                .requestMatchers("/admin").hasRole("ADMIN")
+                .requestMatchers("/token-refresh").permitAll()
                 // 권한필요 단 토큰이 없는데 여기까지 올일이 없음
                 // 단 혹시나 토큰이 없거나 role이 다르다면 바로 다음 필터로 넘어감
                 .anyRequest().authenticated() // 나머지는 다 가능 else
@@ -144,8 +145,6 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler)
                 );
-
-
         /*
          * before At after 을 사용하는 이유는 이걸 지정하지않고 At을 사용한다면
          * 동작의 순서가 보장되지 않기때문이다.

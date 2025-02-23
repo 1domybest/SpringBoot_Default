@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @RestController
-@RequestMapping("/api")
 public class HealthCheckController {
 
     @Value("${server.env}") // blue or green

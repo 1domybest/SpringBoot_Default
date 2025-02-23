@@ -115,7 +115,7 @@ public class JWTUtil {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(maxAgeInSeconds);
         //cookie.setSecure(true); // Https(인증서) 일시 이걸 true로
-        cookie.setPath("/api/token-refresh"); // 쿠키를 허용한 Path
+        cookie.setPath("/token-refresh"); // 쿠키를 허용한 Path
         cookie.setHttpOnly(true);
 
         return cookie;

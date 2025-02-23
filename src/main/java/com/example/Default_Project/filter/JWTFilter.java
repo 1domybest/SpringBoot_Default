@@ -43,7 +43,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String accessToken = request.getHeader(JwtConstants.AUTHORIZATION_HEADER_KEY);
 
         // 토큰이 없다면 다음 필터로 넘김
-        if (request.getRequestURI().equals("/api/login") || request.getRequestURI().equals("/api/token-refresh") || request.getRequestURI().equals("/api/env")) {
+        if (request.getRequestURI().equals("/login") || request.getRequestURI().equals("/token-refresh") || request.getRequestURI().equals("/env")) {
             filterChain.doFilter(request, response);
             return;
         }
