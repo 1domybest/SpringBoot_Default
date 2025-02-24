@@ -99,7 +99,7 @@ public class SecurityConfig {
                 .configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOriginPatterns(Collections.singletonList("*")); // 모든 origin 허용 (테스트용)
-                    // configuration.setAllowedOrigins(Collections.singletonList(CommonConstants.WEB_CLIENT_URL)); // React 클라이언트 URL
+                     configuration.setAllowedOrigins(Collections.singletonList(CommonConstants.WEB_CLIENT_URL)); // React 클라이언트 URL
                     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 HTTP 메서드 허용
                     configuration.setAllowCredentials(true);
