@@ -118,11 +118,7 @@ public class JWTUtil {
         int maxAgeInSeconds = (int) (expiredMs / 1000);
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(maxAgeInSeconds);
-
-        if (!this.clientAddress.equals("localhost")) {
-            cookie.setSecure(true); // Https(인증서) 일시 이걸 true로
-        }
-
+        cookie.setSecure(true); // Https(인증서) 일시 이걸 true로
         cookie.setPath("/"); // 쿠키를 허용한 Path
         cookie.setHttpOnly(true);
         cookie.setDomain(clientAddress);
