@@ -128,6 +128,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/hc", "/env").permitAll() // 무중단 배포용
                 .requestMatchers("/oauth2").permitAll() // 무중단 배포용
+                .requestMatchers("/login/oauth2").permitAll() // 무중단 배포용
                 .requestMatchers("/login", "/join").permitAll() // 허용
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .requestMatchers("/token-refresh").permitAll()

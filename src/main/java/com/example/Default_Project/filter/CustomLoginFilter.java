@@ -50,7 +50,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         System.out.println("JWT log: " + "LoginFilter attemptAuthentication");
 
-        if (!request.getRequestURI().equals("/login") || request.getRequestURI().startsWith("/login/oauth2")) {
+        if (!request.getRequestURI().startsWith("/login") || request.getRequestURI().startsWith("/login/oauth2")) {
             // "/login"이 아닌 경우 필터를 건너뛰고 다음 필터로 전달
             return null;
         }

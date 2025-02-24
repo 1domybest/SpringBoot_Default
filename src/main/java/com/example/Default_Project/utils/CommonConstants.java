@@ -1,5 +1,6 @@
 package com.example.Default_Project.utils;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +11,10 @@ import org.springframework.stereotype.Component;
 public class CommonConstants {
 
     @Value("${server.clientAddress}")
-    private static String clientAddress;
+    private String clientAddress;
 
     @Value("${server.clientPort}")
-    private static String clientPort;
+    private String clientPort;
 
     /**
      *  HTTP Method
@@ -27,9 +28,16 @@ public class CommonConstants {
     /**
      * Client URL
      */
-    public static final String WEB_CLIENT_PATH = "http://" + clientAddress;
-    public static final String WEB_CLIENT_PORT = clientPort;
-    public static final String WEB_CLIENT_URL = WEB_CLIENT_PATH+WEB_CLIENT_PORT;
+    public static String CLIENT_ADDRESS;
+    public static String CLIENT_PORT;
+    public static String WEB_CLIENT_URL;
+    public static String WEB_OAUTH2_REDIRECT_URL;
 
-    public static final String WEB_OAUTH2_REDIRECT_URL = WEB_CLIENT_URL + "/oauth2/succeed";
+    @PostConstruct
+    public void init() {
+        CLIENT_ADDRESS = clientAddress;
+        CLIENT_PORT = clientPort;
+        WEB_CLIENT_URL = "http://" + CLIENT_ADDRESS + ":" + CLIENT_PORT;
+        WEB_OAUTH2_REDIRECT_URL = WEB_CLIENT_URL + "/oauth2/succeed";
+    }
 }
