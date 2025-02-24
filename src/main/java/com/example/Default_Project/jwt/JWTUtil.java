@@ -21,8 +21,8 @@ import java.util.Date;
 @Component
 public class JWTUtil {
 
-    @Value("${spring.profiles.active}")
-    private String active;
+    @Value("${server.clientAddress}")
+    private String clientAddress;
 
     /**
      * 각 회사에서 사용하는 보안키로
@@ -119,7 +119,7 @@ public class JWTUtil {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(maxAgeInSeconds);
 
-        if (!this.active.equals("localhost")) {
+        if (!this.clientAddress.equals("localhost")) {
             cookie.setSecure(true); // Https(인증서) 일시 이걸 true로
         }
 
