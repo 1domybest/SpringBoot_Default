@@ -20,6 +20,10 @@ import java.util.Date;
  */
 @Component
 public class JWTUtil {
+
+    @Value("${spring.profiles.active}")
+    private String active;
+
     /**
      * 각 회사에서 사용하는 보안키로
      * application.yml 내 spring.jwt.secret 에 저장되어있다.
@@ -114,8 +118,12 @@ public class JWTUtil {
         int maxAgeInSeconds = (int) (expiredMs / 1000);
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(maxAgeInSeconds);
-        //cookie.setSecure(true); // Https(인증서) 일시 이걸 true로
-        cookie.setPath("/token-refresh"); // 쿠키를 허용한 Path
+
+        if (!this.active.equals("local")) {
+            cookie.setSecure(true); // Https(인증서) 일시 이걸 true로
+        }
+
+        cookie.setPath("/"); // 쿠키를 허용한 Path
         cookie.setHttpOnly(true);
 
         return cookie;

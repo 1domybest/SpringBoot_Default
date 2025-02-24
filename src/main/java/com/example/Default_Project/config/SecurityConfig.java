@@ -147,20 +147,6 @@ public class SecurityConfig {
                         .successHandler(customSuccessHandler)
                 );
 
-//        http
-//                .oauth2Login(oauth2 -> oauth2
-//                        .authorizationEndpoint(auth -> auth
-//                                .baseUri("/oauth2/authorize") // 인증 요청 URL 변경
-//                        )
-//                        .redirectionEndpoint(redirection -> redirection
-//                                .baseUri("/oauth2/code/*") // 리디렉션 URI 변경
-//                        )
-//                        .userInfoEndpoint(userInfo -> userInfo
-//                                .userService(customOAuth2UserService) // 사용자 정보 가져오기
-//                        )
-//                        .successHandler(customSuccessHandler) // 로그인 성공 핸들러
-//                );
-
         /*
          * before At after 을 사용하는 이유는 이걸 지정하지않고 At을 사용한다면
          * 동작의 순서가 보장되지 않기때문이다.

@@ -56,12 +56,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         jwtUtil.addCookieAccessToken(access, response, JwtConstants.OAUTH2_ACCESS_EXPIRED_MS);
 
         System.out.println("SNS 로그인 성공 " + access + jwtUtil.getAccessTokenByCookie(request));
-        response.setStatus(HttpStatus.OK.value());
 
-        // ✅ 기본 리디렉트 방지
-        clearAuthenticationAttributes(request);
+        response.setStatus(HttpStatus.OK.value());
 
         // ✅ 직접 리디렉트 수행 (부모 메서드 호출 X)
         response.sendRedirect(CommonConstants.WEB_OAUTH2_REDIRECT_URL);
+
     }
 }
