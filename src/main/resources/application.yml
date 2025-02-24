@@ -32,11 +32,6 @@ spring:
   logging:
     level:
       org.hibernate.SQL: debug
-server:
-  servlet:
-    session:
-      cookie:
-        domain: "seoktae.online"
 
 ---
 
@@ -54,11 +49,7 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
-server:
-  servlet:
-    session:
-      cookie:
-        domain: "seoktae.online"
+
 ---
 
 spring:
@@ -77,11 +68,6 @@ spring:
     open-in-view: false
 
 serverName: green_server
-server:
-  servlet:
-    session:
-      cookie:
-        domain: "seoktae.online"
 
 ---
 
