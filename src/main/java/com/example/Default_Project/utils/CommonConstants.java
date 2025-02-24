@@ -16,10 +16,6 @@ public class CommonConstants {
     @Value("${server.clientPort}")
     private String clientPort;
 
-
-    @Value("${spring.profiles.active}")
-    private String active;
-
     /**
      *  HTTP Method
      */
@@ -39,11 +35,6 @@ public class CommonConstants {
 
     @PostConstruct
     public void init() {
-        String http = "http://";
-        if (!this.clientAddress.equals("localhost")) {
-            http = "https://";
-        }
-
         CLIENT_ADDRESS = clientAddress;
         CLIENT_PORT = clientPort;
         WEB_CLIENT_URL = "http://" + CLIENT_ADDRESS + ":" + CLIENT_PORT;
