@@ -46,7 +46,7 @@ public class CommonConstants {
 
         CLIENT_ADDRESS = clientAddress;
         CLIENT_PORT = clientPort;
-        WEB_CLIENT_URL = "https://" + CLIENT_ADDRESS + ":" + CLIENT_PORT;
+        WEB_CLIENT_URL = "http://" + CLIENT_ADDRESS + ":" + CLIENT_PORT;
         WEB_OAUTH2_REDIRECT_URL = WEB_CLIENT_URL + "/oauth2/succeed";
     }
 }
