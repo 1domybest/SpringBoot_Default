@@ -126,7 +126,7 @@ public class JWTUtil {
         cookie.setPath("/"); // 쿠키를 허용한 Path
         cookie.setHttpOnly(true);
         cookie.setDomain(clientAddress);
-//        cookie.setAttribute("SameSite", "None");
+        cookie.setAttribute("SameSite", "None");
 
         return cookie;
     }
