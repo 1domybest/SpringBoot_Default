@@ -40,7 +40,7 @@ public class CommonConstants {
     @PostConstruct
     public void init() {
         String http = "http://";
-        if (!this.active.equals("local")) {
+        if (!this.active.equals("localhost")) {
             http = "https://";
         }
 

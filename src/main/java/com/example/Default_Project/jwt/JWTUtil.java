@@ -119,7 +119,7 @@ public class JWTUtil {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(maxAgeInSeconds);
 
-        if (!this.active.equals("local")) {
+        if (!this.active.equals("localhost")) {
             cookie.setSecure(true); // Https(인증서) 일시 이걸 true로
         }
 
