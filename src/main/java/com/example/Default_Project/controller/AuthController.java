@@ -88,7 +88,7 @@ public class AuthController {
 
         // 쿠키에 새로발급한 리프레쉬 토큰 저장
         jwtUtil.addCookieRefreshToken(newRefresh, response, JwtConstants.REFRESH_EXPIRED_MS);
-
+        jwtUtil.addCookieAccessToken(newAccess, response, JwtConstants.ACCESS_EXPIRED_MS);
         // 헤더에 새로발급한 엑세스 토큰 저장
         jwtUtil.addHeaderAccessToken(newAccess, response);
 
