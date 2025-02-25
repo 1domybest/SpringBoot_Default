@@ -19,7 +19,7 @@ env:
   BLUE_PORT: 8080
   GREEN_PORT: 8081
   REACT_HC_PORT: 80
-  DOMAIN: "seoktae-api.online"
+  DOMAIN: "api.seoktae.online"
 
 on:
   push:
