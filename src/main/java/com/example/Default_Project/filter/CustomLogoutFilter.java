@@ -38,7 +38,14 @@ public class CustomLogoutFilter extends GenericFilter {
      */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("LogoutFilter " + "doFilter" );
+
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+
+        // 요청 URI를 출력
+        String uri = httpRequest.getRequestURI();
+        System.out.println("LogoutFilter doFilter Requested URI: " + uri);
+
         customDoFilter((HttpServletRequest)servletRequest, (HttpServletResponse) servletResponse, filterChain);
     }
 
