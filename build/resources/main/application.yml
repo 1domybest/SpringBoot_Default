@@ -32,6 +32,12 @@ spring:
     level:
       org.hibernate.SQL: debug
 
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web: DEBUG
 serverName: local_server
 
 server:

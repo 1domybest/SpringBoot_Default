@@ -5,12 +5,14 @@ import com.example.Default_Project.filter.CustomLogoutFilter;
 import com.example.Default_Project.filter.JWTFilter;
 import com.example.Default_Project.jwt.JWTUtil;
 import com.example.Default_Project.ouath2.CustomSuccessHandler;
+import com.example.Default_Project.ouath2.PkceOAuth2AuthorizationRequestResolver;
 import com.example.Default_Project.repository.AuthRepository;
 import com.example.Default_Project.service.snsServices.CustomOAuth2UserService;
 import com.example.Default_Project.utils.CommonConstants;
 import com.example.Default_Project.utils.JwtConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -58,6 +63,10 @@ public class SecurityConfig {
     private final AuthRepository authRepository;
 
 
+    @Autowired
+    private ClientRegistrationRepository clientRegistrationRepository;
+
+
     /**
      * @param authenticationConfiguration 보안 검증설정 객체
      * @return AuthenticationManager 검증객체 매니저
@@ -92,7 +101,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        System.out.println("JWT log: " + "SecurityConfig filterChain");
+        OAuth2AuthorizationRequestResolver defaultAuthorizationRequestResolver =
+                new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, "/oauth2/authorization");
+
+        PkceOAuth2AuthorizationRequestResolver pkceResolver =
+                new PkceOAuth2AuthorizationRequestResolver(defaultAuthorizationRequestResolver);
 
         // CORS 설정
         http.cors((cors) -> cors
@@ -140,13 +153,23 @@ public class SecurityConfig {
 
         //oauth2
         // 소셜로그인시 아래 필터에 걸림
+//        http
+//                .oauth2Login((oauth2) -> oauth2
+//                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+//                                .userService(customOAuth2UserService))
+//                        .successHandler(customSuccessHandler)
+//                );
         http
-                .oauth2Login((oauth2) -> oauth2
-                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-                                .userService(customOAuth2UserService))
+                .oauth2Login(oauth2 -> oauth2
+                        .authorizationEndpoint(authorization -> authorization
+                                .baseUri("/login/oauth2/authorization")
+                                .authorizationRequestResolver(pkceResolver) // PKCE 적용
+                        )
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
                         .successHandler(customSuccessHandler)
                 );
-
         /*
          * before At after 을 사용하는 이유는 이걸 지정하지않고 At을 사용한다면
          * 동작의 순서가 보장되지 않기때문이다.

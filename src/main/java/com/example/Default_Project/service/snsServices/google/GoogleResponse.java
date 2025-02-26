@@ -11,7 +11,7 @@ public class GoogleResponse implements OAuth2Response {
     private final Map<String, Object> attributes;
 
     public GoogleResponse(Map<String, Object> attributes) {
-        this.attributes = (Map<String, Object>)attributes.get("response");
+        this.attributes = (Map<String, Object>)attributes;
     }
 
     @Override
