@@ -187,9 +187,19 @@ public class SecurityConfig {
 //        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, authRepository), LogoutFilter.class);
 //
 //
+        // JWT 필터를 UsernamePasswordAuthenticationFilter 전에 실행하도록 변경
+        http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        // CustomLoginFilter를 UsernamePasswordAuthenticationFilter 위치에 추가
+        http.addFilterAt(new CustomLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, authRepository),
+                UsernamePasswordAuthenticationFilter.class);
+
+        // CustomLogoutFilter를 LogoutFilter 전에 실행하도록 변경
+        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, authRepository), LogoutFilter.class);
+
 //        // JWT 방식에서는 상태를 저장하지않기때문에 상태정책에서 빼겠다
-//        http.sessionManagement((session) -> session
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.sessionManagement((session) -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 
         return http.build();
