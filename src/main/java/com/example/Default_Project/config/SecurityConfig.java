@@ -150,6 +150,7 @@ public class SecurityConfig {
                         .authorizationEndpoint(authorization -> authorization
                                 .baseUri("/login/oauth2/authorization")
                                 .authorizationRequestResolver(pkceResolver) // PKCE 적용
+
                         )
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
