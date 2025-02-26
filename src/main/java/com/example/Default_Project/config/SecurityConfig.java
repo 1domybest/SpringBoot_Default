@@ -140,13 +140,13 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/hc", "/env").permitAll() // 무중단 배포용
-                        .requestMatchers("/login", "/join").permitAll() // 허용
-                        .requestMatchers("/login/oauth2/code/*").permitAll() // OAuth2 리디렉션 URL 허용
-                        .requestMatchers("/oauth2/authorization/*").permitAll() // OAuth2 리디렉션 URL 허용
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/token-refresh").permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/hc", "/env").permitAll() // 무중단 배포용
+//                        .requestMatchers("/login", "/join").permitAll() // 허용
+//                        .requestMatchers("/login/oauth2/code/*").permitAll() // OAuth2 리디렉션 URL 허용
+//                        .requestMatchers("/oauth2/authorization/*").permitAll() // OAuth2 리디렉션 URL 허용
+//                        .requestMatchers("/admin").hasRole("ADMIN")
+//                        .requestMatchers("/token-refresh").permitAll()
+                        .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(authorization -> authorization
