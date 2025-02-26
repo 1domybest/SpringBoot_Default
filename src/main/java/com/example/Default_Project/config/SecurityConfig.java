@@ -152,10 +152,10 @@ public class SecurityConfig {
                                 .authorizationRequestResolver(pkceResolver) // PKCE 적용
 
                         )
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService)
-                        )
-                        .successHandler(customSuccessHandler)
+//                        .userInfoEndpoint(userInfo -> userInfo
+//                                .userService(customOAuth2UserService)
+//                        )
+//                        .successHandler(customSuccessHandler)
                 );
 
 
