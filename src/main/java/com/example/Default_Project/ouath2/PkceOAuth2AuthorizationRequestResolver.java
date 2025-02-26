@@ -20,11 +20,13 @@ public class PkceOAuth2AuthorizationRequestResolver implements OAuth2Authorizati
 
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
+        System.out.println("PkceOAuth2AuthorizationRequestResolver: resolve(HttpServletRequest) called");
         return enhance(defaultResolver.resolve(request));
     }
 
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String clientRegistrationId) {
+        System.out.println("PkceOAuth2AuthorizationRequestResolver: resolve(HttpServletRequest, String) called");
         return enhance(defaultResolver.resolve(request, clientRegistrationId));
     }
 
