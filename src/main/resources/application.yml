@@ -45,8 +45,8 @@ server:
     session:
       cookie:
         same-site: none
-        domain: localhost
-        secure: true
+        domain: 127.0.0.1
+        secure: false
         name: JSESSIONID
 ---
 
