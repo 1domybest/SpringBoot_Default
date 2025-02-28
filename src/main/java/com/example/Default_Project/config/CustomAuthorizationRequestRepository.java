@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
+import java.util.Collections;
+
 @Slf4j
 public class CustomAuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
@@ -20,6 +22,10 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
 
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
+
+        log.info("Session ID: {}", request.getSession().getId());
+        log.info("Session Attributes: {}", Collections.list(request.getSession().getAttributeNames()));
+
         if (authorizationRequest == null) {
             log.info("Authorization Request Removed");
             request.getSession().removeAttribute(SESSION_KEY);
