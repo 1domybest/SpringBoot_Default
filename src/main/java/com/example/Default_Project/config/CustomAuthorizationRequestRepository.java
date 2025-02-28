@@ -22,7 +22,8 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
 
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
-
+        boolean isNewSession = request.getSession(false) == null;
+        log.info("Is New Session: {}", isNewSession);
         log.info("Session ID: {}", request.getSession().getId());
         log.info("Session Attributes: {}", Collections.list(request.getSession().getAttributeNames()));
 
