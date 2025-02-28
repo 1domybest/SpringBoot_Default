@@ -16,14 +16,14 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
         Object sessionData = request.getSession().getAttribute(SESSION_KEY);
-        log.info("Session Loaded: {}", sessionData);
+        log.info("Session Loaded: {}", sessionData);  // 세션에 저장된 값 로드
         return (OAuth2AuthorizationRequest) sessionData;
     }
 
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
         boolean isNewSession = request.getSession(false) == null;
-        log.info("Is New Session: {}", isNewSession);
+        log.info("Is New Session: {}", isNewSession);  // 새로운 세션인지 확인
         log.info("Session ID: {}", request.getSession().getId());
         log.info("Session Attributes: {}", Collections.list(request.getSession().getAttributeNames()));
 

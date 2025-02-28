@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 @Configuration
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -36,7 +36,7 @@ public class SecurityConfig {
                 });
                 builder.attributes(attrs -> attrs.put("code_verifier", codeVerifier));
                 System.out.println("PKCE Code Verifier: " + codeVerifier);
-                System.out.println("PKCE Code Challenge: " + codeChallenge);
+                System.out.println("PKCE Code Challenge: {}" + codeChallenge);
             }
         });
         return resolver;
@@ -50,20 +50,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(authorization -> authorization
                                 .authorizationRequestResolver(customAuthorizationRequestResolver(clientRegistrationRepository))
-                                .authorizationRequestRepository(new CustomAuthorizationRequestRepository())
+                                .authorizationRequestRepository(new CustomAuthorizationRequestRepository()) // 여기에 CustomAuthorizationRequestRepository를 설정
                         )
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
-
-        http.addFilterBefore(new SessionDebugFilter(), SecurityContextPersistenceFilter.class);
+        // 필터를 추가
         http.addFilterBefore(customOAuth2RedirectFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
 
         return http.build();
