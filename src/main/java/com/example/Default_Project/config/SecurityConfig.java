@@ -60,7 +60,8 @@ public class SecurityConfig {
                                 .authorizationRequestRepository(new CustomAuthorizationRequestRepository())
                         )
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+
 
         http.addFilterBefore(new SessionDebugFilter(), SecurityContextPersistenceFilter.class);
         http.addFilterBefore(customOAuth2RedirectFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
