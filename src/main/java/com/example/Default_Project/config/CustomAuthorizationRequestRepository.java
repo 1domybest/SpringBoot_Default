@@ -15,6 +15,7 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+        log.info("세션: {}", request.getSession().toString());
         Object sessionData = request.getSession().getAttribute(SESSION_KEY);
         log.info("Session Loaded: {}", sessionData);  // 세션에 저장된 값 로드
         return (OAuth2AuthorizationRequest) sessionData;
@@ -33,6 +34,10 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
         } else {
             log.info("Authorization Request Saved: {}", authorizationRequest);
             request.getSession().setAttribute(SESSION_KEY, authorizationRequest);
+
+            Object sessionData = request.getSession().getAttribute(SESSION_KEY);
+            log.info("방금 저장된 세션: {}", sessionData);  // 세션에 저장된 값 로드
+
         }
     }
 
