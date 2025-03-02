@@ -23,6 +23,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -66,6 +67,31 @@ public class SecurityConfig {
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
 
+
+    @Bean
+    public OAuth2AuthorizationRequestResolver customAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
+        DefaultOAuth2AuthorizationRequestResolver resolver = new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, "/oauth2/authorization");
+        resolver.setAuthorizationRequestCustomizer(builder -> {
+            if ("x".equals(builder.build().getAttributes().get("registration_id"))) {
+                String codeVerifier = PKCEUtil.generateCodeVerifier();
+                String codeChallenge = PKCEUtil.generateCodeChallenge(codeVerifier);
+                builder.additionalParameters(params -> {
+                    params.put("code_challenge", codeChallenge);
+                    params.put("code_challenge_method", "S256");
+                });
+                builder.attributes(attrs -> attrs.put("code_verifier", codeVerifier));
+                System.out.println("PKCE Code Verifier: " + codeVerifier);
+                System.out.println("PKCE Code Challenge:" + codeChallenge);
+            }
+        });
+        return resolver;
+    }
+
+    @Bean
+    public OAuth2AuthorizationRequestRedirectFilter customOAuth2RedirectFilter() {
+        OAuth2AuthorizationRequestRedirectFilter filter = new OAuth2AuthorizationRequestRedirectFilter(customAuthorizationRequestResolver(clientRegistrationRepository));
+        return filter;
+    }
 
     /**
      * @param authenticationConfiguration 보안 검증설정 객체
