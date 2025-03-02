@@ -23,9 +23,9 @@ env:
 
 on:
   push:
-    branches: [ "prod", "sns_succ" ]
+    branches: [ "prod" ]
   pull_request:
-    branches: [ "prod", "sns_succ" ]
+    branches: [ "prod"]
 
 permissions:
   contents: read
