@@ -36,7 +36,7 @@ public class SecurityConfig {
                 });
                 builder.attributes(attrs -> attrs.put("code_verifier", codeVerifier));
                 System.out.println("PKCE Code Verifier: " + codeVerifier);
-                System.out.println("PKCE Code Challenge: {}" + codeChallenge);
+                System.out.println("PKCE Code Challenge:" + codeChallenge);
             }
         });
         return resolver;
@@ -59,7 +59,6 @@ public class SecurityConfig {
                         )
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
-
         // 필터를 추가
         http.addFilterBefore(customOAuth2RedirectFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
 
