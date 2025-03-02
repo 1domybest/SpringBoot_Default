@@ -189,7 +189,9 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(authorization -> authorization
                                 .baseUri("/login/oauth2/authorization")
-                                .authorizationRequestResolver(pkceResolver) // PKCE 적용
+//                                .authorizationRequestResolver(pkceResolver) // PKCE 적용
+                                .authorizationRequestResolver(customAuthorizationRequestResolver(clientRegistrationRepository))
+                                .authorizationRequestRepository(new CustomAuthorizationRequestRepository()) // 여기에 CustomAuthorizationRequestRepository를 설정
                         )
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
