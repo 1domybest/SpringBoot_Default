@@ -23,6 +23,9 @@ public class CustomOAuth2UserService  extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
+        System.out.println("userRequest.getClientRegistration()" + userRequest.getClientRegistration().getProviderDetails());
+        System.out.println("userRequest.getAccessToken()" + userRequest.getAccessToken());
+        System.out.println("userRequest.getAdditionalParameters()" + userRequest.getAdditionalParameters());
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
         System.out.println("locadUser 열림");
@@ -80,9 +83,5 @@ public class CustomOAuth2UserService  extends DefaultOAuth2UserService {
 
             return new CustomOAuth2User(userDTO);
         }
-
-
-
-
     }
 }

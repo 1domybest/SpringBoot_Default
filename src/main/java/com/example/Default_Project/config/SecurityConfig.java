@@ -77,6 +77,7 @@ public class SecurityConfig {
                 String codeChallenge = PKCEUtil.generateCodeChallenge(codeVerifier);
                 builder.additionalParameters(params -> {
                     params.put("code_challenge", codeChallenge);
+                    params.put("testParam", "1234");
                     params.put("code_challenge_method", "S256");
                 });
                 builder.attributes(attrs -> attrs.put("code_verifier", codeVerifier));
@@ -191,7 +192,7 @@ public class SecurityConfig {
                                 .baseUri("/login/oauth2/authorization")
 //                                .authorizationRequestResolver(pkceResolver) // PKCE 적용
                                 .authorizationRequestResolver(customAuthorizationRequestResolver(clientRegistrationRepository))
-                                .authorizationRequestRepository(new CustomAuthorizationRequestRepository()) // 여기에 CustomAuthorizationRequestRepository를 설정
+                                .authorizationRequestRepository(new CustomAuthorizationRequestRepository(authRepository)) // 여기에 CustomAuthorizationRequestRepository를 설정
                         )
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
@@ -219,8 +220,8 @@ public class SecurityConfig {
         http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         // CustomLoginFilter를 UsernamePasswordAuthenticationFilter 위치에 추가
-        http.addFilterAt(new CustomLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, authRepository),
-                UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterAt(new CustomLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, authRepository),
+//                UsernamePasswordAuthenticationFilter.class);
 
         // CustomLogoutFilter를 LogoutFilter 전에 실행하도록 변경
         http.addFilterBefore(new CustomLogoutFilter(jwtUtil, authRepository), LogoutFilter.class);

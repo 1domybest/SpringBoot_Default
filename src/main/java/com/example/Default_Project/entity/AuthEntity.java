@@ -1,9 +1,6 @@
 package com.example.Default_Project.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +29,18 @@ public class AuthEntity {
      * refresh token
      */
     private String refreshToken;
+
+    /**
+     * refresh token
+     */
+    private String state;
+
+    /**
+     * refresh token
+     */
+    @Column(columnDefinition = "LONGTEXT")
+    private String authorizationRequest;
+
 
     /**
      * refresh token 유효기간
