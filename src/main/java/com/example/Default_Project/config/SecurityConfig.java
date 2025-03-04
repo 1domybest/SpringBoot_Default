@@ -11,7 +11,6 @@ import com.example.Default_Project.service.snsServices.CustomOAuth2UserService;
 import com.example.Default_Project.utils.CommonConstants;
 import com.example.Default_Project.utils.JwtConstants;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,8 +26,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -44,6 +41,7 @@ public class SecurityConfig {
      * OAuth2 서비스와 핸들러
      */
     private final CustomOAuth2UserService customOAuth2UserService;
+
     private final CustomSuccessHandler customSuccessHandler;
     private final CustomFailureHandler customFailureHandler;
 
@@ -62,10 +60,10 @@ public class SecurityConfig {
      */
     private final AuthRepository authRepository;
 
-
-    @Autowired
-    private ClientRegistrationRepository clientRegistrationRepository;
-
+    /**
+     * Oauth2 클라이언트 레파지토리
+     */
+    private final ClientRegistrationRepository clientRegistrationRepository;
 
     @Bean
     public OAuth2AuthorizationRequestResolver customAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
@@ -80,8 +78,6 @@ public class SecurityConfig {
                     params.put("code_challenge_method", "S256");
                 });
                 builder.attributes(attrs -> attrs.put("code_verifier", codeVerifier));
-                System.out.println("PKCE Code Verifier: " + codeVerifier);
-                System.out.println("PKCE Code Challenge:" + codeChallenge);
             }
         });
         return resolver;
@@ -170,7 +166,7 @@ public class SecurityConfig {
                         .authorizationEndpoint(authorization -> authorization
                                 .baseUri("/login/oauth2/authorization")
                                 .authorizationRequestResolver(customAuthorizationRequestResolver(clientRegistrationRepository))
-                                .authorizationRequestRepository(new CustomAuthorizationRequestRepository(authRepository)) // 여기에 CustomAuthorizationRequestRepository를 설정
+                                .authorizationRequestRepository(new CustomAuthorizationRequestRepository()) // 여기에 CustomAuthorizationRequestRepository를 설정
                         )
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)

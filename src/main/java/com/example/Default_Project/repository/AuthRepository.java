@@ -11,6 +11,4 @@ public interface AuthRepository extends JpaRepository<AuthEntity,Long> {
 
     @Transactional
     void deleteByRefreshToken(String refresh);
-
-    AuthEntity findByState(String state);
 }

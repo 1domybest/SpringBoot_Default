@@ -1,6 +1,5 @@
 package com.example.Default_Project.config;
 
-import com.example.Default_Project.entity.AuthEntity;
 import com.example.Default_Project.repository.AuthRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,10 +10,7 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Collections;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,11 +18,6 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
 
     private static final String SESSION_KEY = "OAUTH2_AUTHORIZATION_REQUEST";
     public static final String OAUTH_2_AUTHORIZATION_REQUEST = "oauth2_authorization_request";
-
-    /**
-     * 토큰저장 전용 Entity
-     */
-    private final AuthRepository authRepository;
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {

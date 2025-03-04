@@ -31,18 +31,6 @@ public class AuthEntity {
     private String refreshToken;
 
     /**
-     * refresh token
-     */
-    private String state;
-
-    /**
-     * refresh token
-     */
-    @Column(columnDefinition = "LONGTEXT")
-    private String authorizationRequest;
-
-
-    /**
      * refresh token 유효기간
      */
     private String expiration;

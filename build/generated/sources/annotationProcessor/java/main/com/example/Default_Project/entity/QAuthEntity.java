@@ -19,15 +19,11 @@ public class QAuthEntity extends EntityPathBase<AuthEntity> {
 
     public static final QAuthEntity authEntity = new QAuthEntity("authEntity");
 
-    public final StringPath authorizationRequest = createString("authorizationRequest");
-
     public final StringPath expiration = createString("expiration");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath refreshToken = createString("refreshToken");
-
-    public final StringPath state = createString("state");
 
     public final StringPath username = createString("username");
 
