@@ -2,6 +2,7 @@ package com.example.Default_Project.config;
 
 import com.example.Default_Project.entity.AuthEntity;
 import com.example.Default_Project.repository.AuthRepository;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -10,14 +11,17 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
 public class CustomAuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
     private static final String SESSION_KEY = "OAUTH2_AUTHORIZATION_REQUEST";
+    public static final String OAUTH_2_AUTHORIZATION_REQUEST = "oauth2_authorization_request";
 
     /**
      * 토큰저장 전용 Entity
@@ -26,45 +30,28 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
-        String state = request.getParameter("state");
-
-        String authorizationRequestString = authRepository.findByState(state).getAuthorizationRequest();
-        log.info("요청받은 state: {}", authorizationRequestString);
-        OAuth2AuthorizationRequest authorizationRequest = deserialize(authorizationRequestString);
-        System.out.println("클라이언트 아이디" + authorizationRequest.getClientId());
-
-        Object sessionData = request.getSession().getAttribute(SESSION_KEY);
-        log.info("Session Loaded: {}", sessionData);  // 세션에 저장된 값 로드
-        return authorizationRequest;
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(OAUTH_2_AUTHORIZATION_REQUEST)) {
+                OAuth2AuthorizationRequest oauth2Request = deserialize(cookie.getValue());
+                return oauth2Request;
+            }
+        }
+        throw new RuntimeException("cookie not found");
     }
 
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
-        boolean isNewSession = request.getSession(false) == null;
-        log.info("Is New Session: {}", isNewSession);  // 새로운 세션인지 확인
-        log.info("Session ID: {}", request.getSession().getId());
-        log.info("Session Attributes: {}", Collections.list(request.getSession().getAttributeNames()));
-
-        String serialized = serialize(authorizationRequest);
-        System.out.println("serialized: " + serialized);
-        AuthEntity authEntity = new AuthEntity();
-        authEntity.setAuthorizationRequest(serialized);
-        authEntity.setState(authorizationRequest.getState());
-        authRepository.save(authEntity);
-
-
         if (authorizationRequest == null) {
-            log.info("Authorization Request Removed");
-            request.getSession().removeAttribute(SESSION_KEY);
-        } else {
-            log.info("Authorization Request Saved: {}", authorizationRequest);
-            log.info("Authorization Request State: {}", authorizationRequest.getState());
-            request.getSession().setAttribute(SESSION_KEY, authorizationRequest);
-
-            Object sessionData = request.getSession().getAttribute(SESSION_KEY);
-            log.info("방금 저장된 세션: {}", sessionData);  // 세션에 저장된 값 로드
-
+            for (Cookie cookie : request.getCookies()) {
+                cookie.setMaxAge(0);
+            }
         }
+
+        Cookie cookie = new Cookie(OAUTH_2_AUTHORIZATION_REQUEST, serialize(authorizationRequest));
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
     @Override

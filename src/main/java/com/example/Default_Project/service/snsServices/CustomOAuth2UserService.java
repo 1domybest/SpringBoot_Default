@@ -5,6 +5,7 @@ import com.example.Default_Project.entity.UserEntity;
 import com.example.Default_Project.repository.UserRepository;
 import com.example.Default_Project.service.snsServices.google.GoogleResponse;
 import com.example.Default_Project.service.snsServices.naver.NaverResponse;
+import com.example.Default_Project.service.snsServices.x.XResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -23,27 +24,19 @@ public class CustomOAuth2UserService  extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        System.out.println("userRequest.getClientRegistration()" + userRequest.getClientRegistration().getProviderDetails());
-        System.out.println("userRequest.getAccessToken()" + userRequest.getAccessToken());
-        System.out.println("userRequest.getAdditionalParameters()" + userRequest.getAdditionalParameters());
-
-        OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println("locadUser 열림");
-        System.out.println(oAuth2User);
-
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        OAuth2User oAuth2User = super.loadUser(userRequest);
+
         OAuth2Response oAuth2Response = null;
+
         if (registrationId.equals("naver")) {
-
             oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
-        }
-        else if (registrationId.equals("google")) {
-
+        } else if (registrationId.equals("google")) {
             oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
-        }
-        else {
-            oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
-//            return null;
+        } else if (registrationId.equals("x")) {
+            oAuth2Response = new XResponse(oAuth2User.getAttributes());
+        } else {
+            return null;
         }
 
         String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
