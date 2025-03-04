@@ -213,14 +213,10 @@ public class JWTUtil {
 
         // 쿠키가 없으면 바로 null 반환
         if (cookies == null) {
-            System.out.println("쿠키없음");
             return null;
         }
-        System.out.println("쿠키있음");
 
         for (Cookie cookie : cookies) {
-            System.out.println(cookie.getName());
-            System.out.println(cookie.getValue());
             if (cookie.getName().equals(JwtConstants.ACCESS)) {
 
                 access = cookie.getValue();
