@@ -19,16 +19,31 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
     private static final String SESSION_KEY = "OAUTH2_AUTHORIZATION_REQUEST";
     public static final String OAUTH_2_AUTHORIZATION_REQUEST = "oauth2_authorization_request";
 
-    @Override
-    public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+
+    public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(OAUTH_2_AUTHORIZATION_REQUEST)) {
+
                 OAuth2AuthorizationRequest oauth2Request = deserialize(cookie.getValue());
+
+                // 사용후 삭제
+                cookie.setSecure(true); // HTTPS 요청만
+                cookie.setHttpOnly(true); // JavaScript 접근 차단
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                cookie.setAttribute("SameSite", "None");
+
+                response.addCookie(cookie);
                 return oauth2Request;
             }
         }
         throw new RuntimeException("cookie not found");
+    }
+
+    @Override
+    public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+        return null;
     }
 
     @Override
@@ -41,13 +56,14 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
 
         Cookie cookie = new Cookie(OAUTH_2_AUTHORIZATION_REQUEST, serialize(authorizationRequest));
         cookie.setHttpOnly(true);
+        cookie.setMaxAge(10);
         cookie.setPath("/");
         response.addCookie(cookie);
     }
 
     @Override
     public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request, HttpServletResponse response) {
-        OAuth2AuthorizationRequest authRequest = loadAuthorizationRequest(request);
+        OAuth2AuthorizationRequest authRequest = loadAuthorizationRequest(request, response);
         request.getSession().removeAttribute(SESSION_KEY);
         log.info("Authorization Request Removed From Session: {}", authRequest);
         return authRequest;

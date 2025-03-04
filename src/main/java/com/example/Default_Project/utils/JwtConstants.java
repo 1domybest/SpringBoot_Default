@@ -15,7 +15,7 @@ public class JwtConstants {
     // 엑세스 토큰 만료 시간 (10분)
     public static final long ACCESS_EXPIRED_MS = MIN_MS * 10; // 1분 * 10 = 10분
     // 만료 테스트 10초
-    public static final long OAUTH2_ACCESS_EXPIRED_MS = 1000L * 10; // 1초
+    public static final long OAUTH2_ACCESS_EXPIRED_MS = 1000L * 10; // 10초
     // 리프레시 토큰 만료 시간 (24시간)
     public static final long REFRESH_EXPIRED_MS = HOUR_MS * 24; // (1시간) * 24 = 24시간
 }
