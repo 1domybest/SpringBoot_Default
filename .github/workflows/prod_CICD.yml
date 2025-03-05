@@ -173,19 +173,9 @@ jobs:
           script_stop: true
           script: |
             OLD_CONTAINER="${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.CURRENT_COLOR}}"
-
-            if docker ps -a --format '{{.Names}}' | grep -qw "^${OLD_CONTAINER}$"; then
-              echo "Stopping container: $OLD_CONTAINER"
-              docker stop "$OLD_CONTAINER"
-              docker rm "$OLD_CONTAINER"
-              docker rmi "${{ env.DOCKER_DOCKERHUB_USERNAME }}/$OLD_CONTAINER"
-            else
-              echo "No container found with name: $OLD_CONTAINER"
+            if docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
+            docker stop $OLD_CONTAINER
+            docker rm $OLD_CONTAINER
             fi
-#            OLD_CONTAINER="${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.CURRENT_COLOR}}"
-#            if docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
-#            docker stop $OLD_CONTAINER
-#            docker rm $OLD_CONTAINER
-#            fi
-#            docker rmi -f otisaws/$OLD_CONTAINER:latest
+            docker rmi -f otisaws/$OLD_CONTAINER:latest
 
