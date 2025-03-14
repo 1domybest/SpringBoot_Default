@@ -119,7 +119,7 @@ jobs:
       # 도커 빌드 & 푸시 하기
       - name: Docker 빌드 -> 푸시
         run: |
-          IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}:latest"
+          IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.DOMAIN}}_${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}:latest"
           docker build --platform linux/amd64 \
           --build-arg PROFILES=${{ env.CURRENT_BRANCH }} \
           --build-arg ENV=${{env.TARGET_COLOR}} \
@@ -172,7 +172,7 @@ jobs:
           password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
-            OLD_CONTAINER="${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.CURRENT_COLOR}}"
+            OLD_CONTAINER="${{env.DOMAIN}}_${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.CURRENT_COLOR}}"
             if docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
             docker stop $OLD_CONTAINER
             docker rm $OLD_CONTAINER
